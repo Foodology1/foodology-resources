@@ -317,80 +317,68 @@ async function openScanPanel(){
   const allNew=[];
   const errors=[];
 
-  // ── SCAN BLOG + PODCAST via Anthropic web search ─────────────────────
+  // ── SCAN BLOG + PODCAST via Anthropic ───────────────────────────────
   if(anthropicKey){
-    // Scan blog and podcast separately for better results
-    const scanTargets=[
-      {label:'Blog',query:'site:foodologyfeedingtherapy.com blog post 2024 2025 2026',type:'Blog Post',domain:'foodologyfeedingtherapy.com'},
-      {label:'Podcast',query:'site:foodologyfeeding.mykajabi.com podcast episode 2024 2025 2026',type:'Podcast Episode',domain:'foodologyfeeding.mykajabi.com/podcasts'},
+    const scanJobs=[
+      {label:'Blog Posts',type:'Blog Post',
+       prompt:'Search for blog posts on foodologyfeedingtherapy.com. Use web search with query: site:foodologyfeedingtherapy.com. List every blog post article you find with its title and full URL. Return as JSON array: [{"title":"...","url":"...","type":"Blog Post","summary":"one sentence"}]. Only blog article URLs, not homepage or service pages. Return ONLY the JSON array.'},
+      {label:'Podcast Episodes',type:'Podcast Episode',
+       prompt:'Search for podcast episodes on foodologyfeeding.mykajabi.com/podcasts. Use web search with query: site:foodologyfeeding.mykajabi.com/podcasts. List every episode you find with title and full URL. Return as JSON array: [{"title":"...","url":"...","type":"Podcast Episode","summary":"one sentence"}]. Return ONLY the JSON array.'},
     ];
 
-    for(const target of scanTargets){
+    for(const job of scanJobs){
       try{
-        const prompt=`Search for recent ${target.label} content from Foodology Feeding using this query: "${target.query}"
-
-Return a JSON array of up to 20 results. Each item must have: title, url, type ("${target.type}"), summary (1 sentence).
-Only include items from ${target.domain}.
-Return ONLY a JSON array, no markdown, no explanation:
-[{"title":"...","url":"...","type":"${target.type}","summary":"..."}]`;
-
-        // Step 1: call with web search tool
-        const res1=await fetch('https://api.anthropic.com/v1/messages',{
+        // Turn 1: let Claude search
+        const r1=await fetch('https://api.anthropic.com/v1/messages',{
           method:'POST',
           headers:{'Content-Type':'application/json','x-api-key':anthropicKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-          body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:3000,
+          body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,
             tools:[{type:'web_search_20250305',name:'web_search'}],
-            messages:[{role:'user',content:prompt}]})
+            messages:[{role:'user',content:job.prompt}]})
         });
-        const data1=await res1.json();
+        const d1=await r1.json();
+        if(d1.error)throw new Error(d1.error.message);
 
-        // Step 2: if search tool was used, send results back for final answer
-        let finalText='';
-        if(data1.stop_reason==='tool_use'){
-          const res2=await fetch('https://api.anthropic.com/v1/messages',{
-            method:'POST',
-            headers:{'Content-Type':'application/json','x-api-key':anthropicKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-            body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:3000,
-              tools:[{type:'web_search_20250305',name:'web_search'}],
-              messages:[
-                {role:'user',content:prompt},
-                {role:'assistant',content:data1.content},
-                {role:'user',content:'Now return ONLY the JSON array based on those search results. No explanation, no markdown, just the JSON array.'}
-              ]})
-          });
-          const data2=await res2.json();
-          finalText=data2.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-        }else{
-          finalText=data1.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-        }
+        // Collect all content blocks to pass back
+        const assistantContent=d1.content;
 
-        const cleaned=finalText.replace(/```json|```/g,'').trim();
-        const arrMatch=cleaned.match(/\[[\s\S]*\]/);
-        if(arrMatch){
-          const items=JSON.parse(arrMatch[0]);
-          items.forEach(item=>{
-            if(item.url&&item.title){
-              const normUrl=item.url.toLowerCase().replace(/\/$/,'');
-              if(!existingUrls.has(normUrl))allNew.push({...item,tags:[]});
+        // Turn 2: ask for final JSON output after search completes
+        const r2=await fetch('https://api.anthropic.com/v1/messages',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','x-api-key':anthropicKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+          body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,
+            tools:[{type:'web_search_20250305',name:'web_search'}],
+            messages:[
+              {role:'user',content:job.prompt},
+              {role:'assistant',content:assistantContent},
+              {role:'user',content:'Based on your search results, output ONLY a raw JSON array (no markdown, no backticks, no explanation) of every item found. Start your response with [ and end with ]'}
+            ]})
+        });
+        const d2=await r2.json();
+        if(d2.error)throw new Error(d2.error.message);
+
+        const txt=d2.content.filter(b=>b.type==='text').map(b=>b.text).join('').trim();
+        const match=txt.match(/\[[\s\S]*\]/);
+        if(match){
+          JSON.parse(match[0]).forEach(item=>{
+            if(item.url&&item.title&&item.url.startsWith('http')){
+              const nu=item.url.toLowerCase().replace(/\/$/,'');
+              if(!existingUrls.has(nu))allNew.push({title:item.title,url:item.url,type:item.type||job.type,summary:item.summary||'',tags:[]});
             }
           });
         }
-      }catch(e){errors.push(`${target.label} scan: ${e.message}`);}
+      }catch(e){errors.push(job.label+' scan: '+e.message);}
     }
   }
 
   // ── SCAN YOUTUBE ─────────────────────────────────────────────────────
   if(ytKey){
     try{
-      // Get channel ID from handle
-      const searchRes=await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(YT_CHANNEL)}&type=channel&key=${ytKey}`);
-      const searchData=await searchRes.json();
-      if(searchData.error)throw new Error(searchData.error.message);
-      const channelId=searchData.items?.[0]?.id?.channelId;
-      if(!channelId)throw new Error('Channel not found');
+      // Use hardcoded channel ID for reliability (UC67O3BHE9S_ZwHQ6plIzw6Q = @FoodologyFeeding)
+      let channelId='UC67O3BHE9S_ZwHQ6plIzw6Q';
 
       // Get recent videos
-      const vidRes=await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&maxResults=20&type=video&key=${ytKey}`);
+      const vidRes=await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&maxResults=25&type=video&key=${ytKey}`);
       const vidData=await vidRes.json();
       if(vidData.error)throw new Error(vidData.error.message);
 
@@ -406,7 +394,7 @@ Return ONLY a JSON array, no markdown, no explanation:
           });
         }
       });
-    }catch(e){errors.push('YouTube scan: '+e.message);}
+    }catch(e){errors.push('YouTube: '+e.message);}
   }
 
   renderScanResults(allNew,errors);
