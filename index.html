@@ -6,370 +6,328 @@
 <title>Foodology — Resource Library</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --green: #6DC04B; --orange: #F07D35; --teal: #35BFBF;
-  --dark: #1E1E1E; --mid: #4A4A4A; --light: #F7F6F2;
-  --white: #FFFFFF; --border: #E2E0D8;
-  --card-shadow: 0 2px 16px rgba(0,0,0,0.07);
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--dark); min-height: 100vh; }
+:root{--green:#6DC04B;--orange:#F07D35;--teal:#35BFBF;--dark:#1E1E1E;--mid:#4A4A4A;--light:#F7F6F2;--white:#FFFFFF;--border:#E2E0D8;--shadow:0 2px 16px rgba(0,0,0,.07)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--dark);min-height:100vh}
+header{background:var(--dark);padding:1.25rem 2rem;display:flex;align-items:center;gap:1rem;border-bottom:3px solid var(--orange)}
+.logo-mark{width:40px;height:40px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:22px;height:22px;fill:white}
+.logo-text h1{font-family:'DM Serif Display',serif;font-size:1.3rem;color:white}
+.logo-text p{font-size:.7rem;color:#888;letter-spacing:.08em;text-transform:uppercase;font-weight:500}
+.header-right{margin-left:auto;display:flex;gap:.75rem;align-items:center}
+.admin-btn{padding:.4rem .9rem;background:transparent;border:1px solid #555;color:#aaa;font-family:'DM Sans',sans-serif;font-size:.75rem;border-radius:6px;cursor:pointer;transition:all .15s}
+.admin-btn:hover{border-color:#aaa;color:white}
+.admin-btn.active{background:var(--orange);border-color:var(--orange);color:white}
 
-header { background: var(--dark); padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1rem; border-bottom: 3px solid var(--orange); }
-.logo-mark { width: 44px; height: 44px; background: var(--orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.logo-mark svg { width: 24px; height: 24px; fill: white; }
-.logo-text h1 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: white; }
-.logo-text p { font-size: .75rem; color: #888; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
+main{max-width:1060px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
 
-main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+/* SEARCH BAR */
+.top-bar{display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.search-wrap{position:relative;flex:1;min-width:220px}
+.search-wrap svg{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:#aaa}
+input[type=search]{width:100%;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--dark);background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .9rem .65rem 2.4rem;outline:none;transition:border-color .15s}
+input[type=search]:focus{border-color:var(--teal)}
 
-/* SEARCH + FILTER BAR */
-.search-bar { display: flex; gap: .75rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
-.search-wrap { position: relative; flex: 1; min-width: 200px; }
-.search-wrap svg { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; stroke: #aaa; }
-input[type=search] { width: 100%; font-family: 'DM Sans', sans-serif; font-size: .9375rem; color: var(--dark); background: var(--white); border: 1.5px solid var(--border); border-radius: 10px; padding: .7rem 1rem .7rem 2.5rem; outline: none; transition: border-color .15s; }
-input[type=search]:focus { border-color: var(--teal); }
+/* FILTER PILLS */
+.filter-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.pill{padding:.35rem .9rem;border-radius:20px;border:1.5px solid var(--border);background:var(--white);font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:500;color:var(--mid);cursor:pointer;transition:all .15s}
+.pill:hover{border-color:var(--orange);color:var(--orange)}
+.pill.active{background:var(--orange);border-color:var(--orange);color:white}
 
-.filter-pills { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
-.pill-btn { padding: .4rem 1rem; border-radius: 20px; border: 1.5px solid var(--border); background: var(--white); font-family: 'DM Sans', sans-serif; font-size: .8125rem; font-weight: 500; color: var(--mid); cursor: pointer; transition: all .15s; }
-.pill-btn:hover { border-color: var(--orange); color: var(--orange); }
-.pill-btn.active { background: var(--orange); border-color: var(--orange); color: white; }
+.count{font-size:.8rem;color:var(--mid);margin-bottom:1rem}
 
-/* COUNT */
-.results-count { font-size: .8125rem; color: var(--mid); margin-bottom: 1rem; }
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem}
+.card{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:1.1rem 1.2rem;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.1)}
+.card-type{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem}
+.card-type.blog-post{color:var(--teal)}
+.card-type.podcast-episode{color:#9B59B6}
+.card-type.tool{color:var(--orange)}
+.card-type.course{color:#E74C3C}
+.card-type.book{color:#27AE60}
+.card-type.freebie{color:#F39C12}
+.card-type.video{color:#3498DB}
+.card-title{font-weight:600;font-size:.9rem;color:var(--dark);margin-bottom:.4rem;line-height:1.4}
+.card-summary{font-size:.8rem;color:var(--mid);line-height:1.6;flex:1;margin-bottom:.85rem}
+.card-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.75rem}
+.tag{font-size:.68rem;padding:2px 7px;background:var(--light);border:1px solid var(--border);border-radius:10px;color:var(--mid)}
+.card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.card-link{display:inline-flex;align-items:center;gap:.3rem;font-size:.78rem;font-weight:600;color:var(--orange);text-decoration:none}
+.card-link:hover{color:#d96a25}
+.card-link svg{width:12px;height:12px}
+.card-actions{display:flex;gap:.5rem}
+.card-actions button{background:none;border:none;cursor:pointer;font-size:.72rem;font-family:'DM Sans',sans-serif;padding:2px 6px;border-radius:4px}
+.edit-btn{color:#888} .edit-btn:hover{color:var(--teal)}
+.del-btn{color:#daa} .del-btn:hover{color:#c0392b}
 
-/* RESOURCE CARDS */
-.resource-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+.empty{text-align:center;padding:3rem;color:#bbb;grid-column:1/-1}
 
-.resource-card { background: var(--white); border-radius: 14px; border: 1px solid var(--border); padding: 1.25rem; box-shadow: var(--card-shadow); transition: transform .15s, box-shadow .15s; display: flex; flex-direction: column; }
-.resource-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
+/* ADD BUTTON */
+.add-btn{display:flex;align-items:center;gap:.4rem;padding:.6rem 1.1rem;background:var(--green);color:white;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;border:none;border-radius:8px;cursor:pointer;white-space:nowrap}
+.add-btn:hover{background:#5aaa3a}
 
-.card-type { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; margin-bottom: .5rem; }
-.card-type.blog-post { color: var(--teal); }
-.card-type.podcast-episode { color: #9B59B6; }
-.card-type.tool { color: var(--orange); }
-.card-type.course { color: #E74C3C; }
-.card-type.book { color: #2ECC71; }
-.card-type.freebie { color: #F39C12; }
-.card-type.video { color: #3498DB; }
+/* MODAL */
+.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:1rem}
+.overlay.open{display:flex}
+.modal{background:var(--white);border-radius:16px;padding:1.5rem;width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
+.modal h2{font-family:'DM Serif Display',serif;font-size:1.2rem;margin-bottom:1rem}
+.frow{margin-bottom:.85rem}
+.flabel{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mid);display:block;margin-bottom:.35rem}
+.finput{width:100%;font-family:'DM Sans',sans-serif;font-size:.875rem;color:var(--dark);background:var(--light);border:1.5px solid var(--border);border-radius:8px;padding:.6rem .85rem;outline:none;transition:border-color .15s}
+.finput:focus{border-color:var(--teal)}
+textarea.finput{min-height:80px;resize:vertical}
+.mactions{display:flex;gap:.75rem;margin-top:1rem}
+.save-btn{flex:1;padding:.7rem;background:var(--green);color:white;font-family:'DM Sans',sans-serif;font-size:.875rem;font-weight:600;border:none;border-radius:8px;cursor:pointer}
+.save-btn:hover{background:#5aaa3a}
+.cancel-btn{padding:.7rem 1.1rem;background:var(--light);color:var(--mid);font-family:'DM Sans',sans-serif;font-size:.875rem;font-weight:600;border:1px solid var(--border);border-radius:8px;cursor:pointer}
 
-.card-title { font-weight: 600; font-size: .9375rem; color: var(--dark); margin-bottom: .5rem; line-height: 1.4; }
-.card-summary { font-size: .8125rem; color: var(--mid); line-height: 1.6; flex: 1; margin-bottom: 1rem; }
-.card-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .85rem; }
-.tag { font-size: .7rem; padding: 2px 8px; background: var(--light); border: 1px solid var(--border); border-radius: 10px; color: var(--mid); }
-.card-link { display: inline-flex; align-items: center; gap: .35rem; font-size: .8125rem; font-weight: 600; color: var(--orange); text-decoration: none; transition: color .15s; }
-.card-link:hover { color: #d96a25; }
-.card-link svg { width: 13px; height: 13px; }
+/* PASSWORD MODAL */
+.pw-modal{background:var(--white);border-radius:16px;padding:1.75rem;width:100%;max-width:360px;text-align:center}
+.pw-modal h2{font-family:'DM Serif Display',serif;font-size:1.25rem;margin-bottom:.5rem}
+.pw-modal p{font-size:.85rem;color:var(--mid);margin-bottom:1.25rem}
+.pw-input{width:100%;font-family:'DM Sans',sans-serif;font-size:1rem;color:var(--dark);background:var(--light);border:1.5px solid var(--border);border-radius:8px;padding:.7rem 1rem;outline:none;text-align:center;letter-spacing:.15em;margin-bottom:.75rem}
+.pw-input:focus{border-color:var(--teal)}
+.pw-btn{width:100%;padding:.75rem;background:var(--orange);color:white;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;border:none;border-radius:8px;cursor:pointer;margin-bottom:.5rem}
+.pw-btn:hover{background:#d96a25}
+.pw-err{font-size:.8rem;color:#c0392b;margin-top:.25rem}
 
-/* EMPTY STATE */
-.empty { text-align: center; padding: 3rem; color: #bbb; }
-.empty svg { width: 48px; height: 48px; margin-bottom: 1rem; opacity: .3; }
+/* EXPORT */
+.export-btn{display:flex;align-items:center;gap:.4rem;padding:.55rem .9rem;background:var(--white);color:var(--mid);font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:border-color .15s}
+.export-btn:hover{border-color:var(--teal);color:var(--teal)}
 
-/* ADD RESOURCE PANEL */
-.add-btn { display: flex; align-items: center; gap: .5rem; padding: .65rem 1.25rem; background: var(--green); color: white; font-family: 'DM Sans', sans-serif; font-size: .875rem; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; transition: background .15s; white-space: nowrap; }
-.add-btn:hover { background: #5aaa3a; }
-
-.modal-overlay { display: none; position: fixed; top:0;left:0;width:100%;height:100%; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
-.modal-overlay.open { display: flex; }
-.modal { background: var(--white); border-radius: 16px; padding: 1.75rem; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; }
-.modal h2 { font-family: 'DM Serif Display', serif; font-size: 1.25rem; margin-bottom: 1.25rem; }
-.form-row { margin-bottom: 1rem; }
-.form-label { font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--mid); display: block; margin-bottom: .4rem; }
-.form-input { width: 100%; font-family: 'DM Sans', sans-serif; font-size: .9rem; color: var(--dark); background: var(--light); border: 1.5px solid var(--border); border-radius: 8px; padding: .65rem .9rem; outline: none; transition: border-color .15s; }
-.form-input:focus { border-color: var(--teal); }
-textarea.form-input { min-height: 90px; resize: vertical; }
-select.form-input { cursor: pointer; }
-.modal-actions { display: flex; gap: .75rem; margin-top: 1.25rem; }
-.btn-save { flex: 1; padding: .75rem; background: var(--green); color: white; font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; }
-.btn-save:hover { background: #5aaa3a; }
-.btn-cancel { padding: .75rem 1.25rem; background: var(--light); color: var(--mid); font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 600; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
-
-/* MANAGE PANEL */
-.manage-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: .75rem; }
-.manage-title { font-family: 'DM Serif Display', serif; font-size: 1.5rem; }
-.manage-right { display: flex; gap: .75rem; align-items: center; }
-.export-btn { display: flex; align-items: center; gap: .4rem; padding: .6rem 1rem; background: var(--white); color: var(--mid); font-family: 'DM Sans', sans-serif; font-size: .8125rem; font-weight: 600; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; transition: border-color .15s; }
-.export-btn:hover { border-color: var(--teal); color: var(--teal); }
+.admin-bar{display:flex;gap:.75rem;align-items:center}
 </style>
 </head>
 <body>
-
 <header>
-  <div class="logo-mark">
-    <svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 2.4 1.1 4.5 2.8 5.9L7 20h10l-.8-5.1C17.9 13.5 19 11.4 19 9c0-4-3-7-7-7zm0 2c2.8 0 5 2.2 5 5 0 1.8-.9 3.3-2.3 4.3l-.7.5.6 3.7-.6.5H10l-.6-.5.6-3.7-.7-.5C7.9 12.3 7 10.8 7 9c0-2.8 2.2-5 5-5z"/></svg>
-  </div>
-  <div class="logo-text">
-    <h1>Foodology Feeding</h1>
-    <p>Resource Library</p>
+  <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 2.4 1.1 4.5 2.8 5.9L7 20h10l-.8-5.1C17.9 13.5 19 11.4 19 9c0-4-3-7-7-7zm0 2c2.8 0 5 2.2 5 5 0 1.8-.9 3.3-2.3 4.3l-.7.5.6 3.7-.6.5H10l-.6-.5.6-3.7-.7-.5C7.9 12.3 7 10.8 7 9c0-2.8 2.2-5 5-5z"/></svg></div>
+  <div class="logo-text"><h1>Foodology Feeding</h1><p>Resource Library</p></div>
+  <div class="header-right">
+    <button class="admin-btn" id="adminToggle" onclick="toggleAdmin()">Admin</button>
   </div>
 </header>
 
 <main>
-  <div class="manage-bar">
-    <span class="manage-title">Resources</span>
-    <div class="manage-right">
+  <div class="top-bar">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="searchInput" placeholder="Search by title, topic, or keyword..." oninput="filter()">
+    </div>
+    <div class="admin-bar" id="adminBar" style="display:none">
       <button class="export-btn" onclick="exportCSV()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Export CSV
       </button>
       <button class="add-btn" onclick="openModal()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Add Resource
       </button>
     </div>
   </div>
 
-  <div class="search-bar">
-    <div class="search-wrap">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="search" id="searchInput" placeholder="Search by title, keyword, or topic..." oninput="filterResources()">
-    </div>
-  </div>
-
-  <div class="filter-pills" id="filterPills"></div>
-  <p class="results-count" id="resultsCount"></p>
-  <div class="resource-grid" id="resourceGrid"></div>
+  <div class="filter-pills" id="pills"></div>
+  <p class="count" id="count"></p>
+  <div class="grid" id="grid"></div>
 </main>
 
+<!-- Password Modal -->
+<div class="overlay" id="pwOverlay">
+  <div class="pw-modal">
+    <h2>Admin Access</h2>
+    <p>Enter the admin password to add, edit, or delete resources.</p>
+    <input type="password" class="pw-input" id="pwInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="pw-btn" onclick="checkPw()">Enter</button>
+    <button class="cancel-btn" style="width:100%" onclick="document.getElementById('pwOverlay').classList.remove('open')">Cancel</button>
+    <p class="pw-err" id="pwErr"></p>
+  </div>
+</div>
+
 <!-- Add/Edit Modal -->
-<div class="modal-overlay" id="modalOverlay">
+<div class="overlay" id="editOverlay">
   <div class="modal">
     <h2 id="modalTitle">Add Resource</h2>
-    <div class="form-row">
-      <label class="form-label">Title *</label>
-      <input type="text" class="form-input" id="fTitle" placeholder="e.g. Why Won't My Child Eat?">
-    </div>
-    <div class="form-row">
-      <label class="form-label">URL / Link *</label>
-      <input type="text" class="form-input" id="fUrl" placeholder="https://...">
-    </div>
-    <div class="form-row">
-      <label class="form-label">Type *</label>
-      <select class="form-input" id="fType">
-        <option value="">Select type...</option>
-        <option>Blog Post</option>
-        <option>Podcast Episode</option>
-        <option>Tool</option>
-        <option>Course</option>
-        <option>Book</option>
-        <option>Freebie</option>
-        <option>Video</option>
+    <div class="frow"><label class="flabel">Title *</label><input type="text" class="finput" id="fTitle" placeholder="e.g. Why Won't My Child Eat?"></div>
+    <div class="frow"><label class="flabel">URL *</label><input type="text" class="finput" id="fUrl" placeholder="https://..."></div>
+    <div class="frow"><label class="flabel">Type *</label>
+      <select class="finput" id="fType">
+        <option value="">Select...</option>
+        <option>Blog Post</option><option>Podcast Episode</option><option>Tool</option>
+        <option>Course</option><option>Book</option><option>Freebie</option><option>Video</option>
       </select>
     </div>
-    <div class="form-row">
-      <label class="form-label">Summary</label>
-      <textarea class="form-input" id="fSummary" placeholder="Brief description of what this resource covers..."></textarea>
-    </div>
-    <div class="form-row">
-      <label class="form-label">Tags (comma separated)</label>
-      <input type="text" class="form-input" id="fTags" placeholder="e.g. picky eating, ARFID, sensory, gut health">
-    </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-      <button class="btn-save" onclick="saveResource()">Save Resource</button>
+    <div class="frow"><label class="flabel">Summary</label><textarea class="finput" id="fSummary" placeholder="Brief description..."></textarea></div>
+    <div class="frow"><label class="flabel">Tags (comma separated)</label><input type="text" class="finput" id="fTags" placeholder="e.g. pickyeating, ARFID, sensory"></div>
+    <div class="mactions">
+      <button class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+      <button class="save-btn" onclick="saveResource()">Save Resource</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── INITIAL DATA ──────────────────────────────────────────────────────────
-const DEFAULT_RESOURCES = [
-  {id:'r1',title:'The Next Bite Plan',url:'https://try-coast-0250.glide.page/dl/',type:'Course',summary:'The Next Bite Plan is a simple, structured course to help families take the next step in expanding their child\'s diet.',tags:['picky eating','food expansion','parent course']},
-  {id:'r2',title:'Mealtime Mindset',url:'https://www.amazon.com/dp/B0BQ52',type:'Book',summary:'A guide to changing your mindset around mealtimes to reduce stress and increase food acceptance.',tags:['mindset','mealtime','parent guide']},
-  {id:'r3',title:'101 Ways to Make Food Fun',url:'https://foodologyfeeding.mykajabi.com',type:'Book',summary:'A playful collection of ideas to help children engage with food in low-pressure, joyful ways.',tags:['food play','picky eating','fun','engagement']},
-  {id:'r4',title:'The Picky Eater\'s Plate',url:'https://foodologyfeeding.mykajabi.com/ThePickyEatersPlate',type:'Course',summary:'Helps you build structure, routine, and strategies around mealtimes for picky eaters.',tags:['picky eating','mealtime structure','course']},
-  {id:'r5',title:'Nutrient Dense Recipes',url:'https://foodologyfeeding.mykajabi.com',type:'Book',summary:'Simple, nutritious recipes designed for selective eaters to maximize nutrition from accepted foods.',tags:['nutrition','recipes','picky eating']},
-  {id:'r6',title:'Mealtime Makeover Course',url:'https://foodologyfeedingtherapy.com',type:'Course',summary:'A self-paced course to help parents transform stressful mealtimes into calm, connected experiences.',tags:['mealtime','parent course','stress','behavior']},
-  {id:'r7',title:'Unlocking Mealtimes Roadmap',url:'https://foodologyfeeding.mykajabi.com',type:'Course',summary:'Comprehensive evaluation and personalized roadmap program for children with complex feeding challenges.',tags:['evaluation','roadmap','ARFID','sensory','oral motor','gut health']},
-  {id:'r8',title:'Feeding Therapy Insurance Appeal Toolkit',url:'https://foodologyfeedingtherapy.com',type:'Tool',summary:'Templates and guides to help parents appeal insurance denials for feeding therapy services.',tags:['insurance','appeal','feeding therapy','parents']},
-  {id:'r9',title:'Food Progress Tracker',url:'https://foodologyfeeding.mykajabi.com',type:'Tool',summary:'Track your child\'s exposure and progress with foods across the stages from fearful to foodie.',tags:['tracking','food exposure','progress','picky eating']},
-  {id:'r10',title:'Insurance Appeal for Feeding Therapy',url:'https://foodologyfeedingtherapy.com',type:'Blog Post',summary:'A step-by-step guide to appealing insurance denials for feeding therapy. Know your rights and what to say.',tags:['insurance','appeal','feeding therapy','advocacy']},
-  {id:'r11',title:'Why ARFID Treatment Isn\'t Working for My Child',url:'https://foodologyfeedingtherapy.com',type:'Blog Post',summary:'Uncovers the common pitfalls of traditional ARFID treatment and what a more effective approach looks like.',tags:['ARFID','treatment','feeding therapy','why it fails']},
-  {id:'r12',title:'Is My Child a Picky Eater or Is It Something More?',url:'https://foodologyfeedingtherapy.com',type:'Blog Post',summary:'Helps parents distinguish between typical picky eating and a more complex feeding disorder.',tags:['picky eating','ARFID','PFD','signs','red flags']},
-  {id:'r13',title:'Picky Eating: Why First Bite, No Second? ARFID & PFD',url:'https://foodologyfeedingtherapy.com',type:'Blog Post',summary:'Explores the connection between ARFID, PFD, and the pattern of refusing foods after the first bite.',tags:['ARFID','PFD','picky eating','food refusal','sensory']},
-  {id:'r14',title:'Why Your Child Eats for the Feeding Therapist or the Babysitter',url:'https://foodologyfeedingtherapy.com',type:'Blog Post',summary:'Reveals the emotional and relational dynamics that make children eat better with others than at home.',tags:['behavior','mealtime','relationships','feeding therapy','parents']},
-  {id:'r15',title:'Should You Worry About Your Toddler\'s Food Strike?',url:'https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149022919',type:'Podcast Episode',summary:'Breaks down what\'s a normal developmental phase vs. what might be cause for concern with toddler food refusal.',tags:['toddler','food strike','picky eating','development','normal vs not']},
-  {id:'r16',title:'4 Hidden Medical Reasons Behind Picky Eating',url:'https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149063143',type:'Podcast Episode',summary:'The 5 most commonly missed medical reasons behind picky eating including oral motor, sensory, and gut issues.',tags:['medical','picky eating','gut health','sensory','oral motor','ARFID']},
-  {id:'r17',title:'3 Signs Waiting It Out Is Okay — and 3 Signs It\'s Not',url:'https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149063141',type:'Podcast Episode',summary:'Helps parents know when to wait and watch vs. when to seek professional feeding support.',tags:['picky eating','when to seek help','red flags','green flags','toddler']},
-  {id:'r18',title:'Don\'t Let Picky Eating Ruin The BBQ',url:'https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149039214',type:'Podcast Episode',summary:'Strategies to help your child feel safe and calm at summer cookouts and social food events.',tags:['social eating','picky eating','summer','events','anxiety','mealtime']},
-  {id:'r19',title:'How to Move From "I Can\'t" to "How Can I?"',url:'https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149063133',type:'Podcast Episode',summary:'A powerful mindset shift for parents that transforms the feeding therapy journey.',tags:['mindset','parents','feeding therapy','motivation']},
-  {id:'r20',title:'Creative Gift Ideas for Your Picky Eater',url:'https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148908883',type:'Podcast Episode',summary:'Gift ideas that support sensory exploration, oral motor development, and food mindset for picky eaters.',tags:['gifts','oral motor','sensory','picky eating','holiday']},
-  {id:'r21',title:'Ultimate Guide for Parents — Free Ebook',url:'https://foodologyfeeding.mykajabi.com/opt-in-a8d2ddd1-d325-42a1-83cb-d1346e7cd59d',type:'Freebie',summary:'A 24-page free ebook guide for parents of picky eaters covering strategies, signs, and next steps.',tags:['freebie','ebook','picky eating','parents','guide']},
-];
-
+const ADMIN_PW = 'foodology2025';
 const TYPES = ['All','Blog Post','Podcast Episode','Tool','Course','Book','Freebie','Video'];
-const TYPE_SLUG = t => t.toLowerCase().replace(/\s+/g,'-');
+const DEFAULT = [{"id":"r1","title":"The Next Bite Plan","url":"https://try-coast-0250.glide.page/dl/f70dd2","type":"Course","summary":"The Next Bite Plan is a simple, step-by-step digital course designed for parents whose child is close\u2014but not quite moving forward with food.","tags":[]},{"id":"r9","title":"Mealtime Mindset","url":"https://www.amazon.com/dp/B0BQ5259NH","type":"Book","summary":"A guide to changing your mindset to support long-term progress with your picky eater.","tags":["eatinghabits","mealtimemindset","mindset","pickyeating","schoollunchtips"]},{"id":"r10","title":"101 Ways to Make Food Fun","url":"https://foodologyfeeding.mykajabi.com/offers/iDRRxhBe/checkout","type":"Book","summary":"A playful collection of ideas to spark curiosity and joy around food without pressure.","tags":["familymeals","healthyeating","positivemealtimes","schoollunchtips","ways"]},{"id":"r11","title":"The Picky Eater's Plate","url":"https://foodologyfeeding.mykajabi.com/offers/YpHzz2yb/checkout","type":"Book","summary":"Helps you build structure, routines, and visual strategies to move from chaos to calm.","tags":["mealprep","oralmotor","parentingtips","picky","plate","routine"]},{"id":"r12","title":"Nutrient Dense Recipes","url":"https://foodologyfeeding.mykajabi.com/offers/YpHzz2yb/checkout","type":"Book","summary":"Simple, nutritious recipes designed for picky eaters with hidden nutrition boosters.","tags":["dense","emotionaleating","fussyeater","nutrient","nutrition","pickyeating"]},{"id":"r13","title":"Mealtime Makeover Course","url":"https://foodologyfeedingtherapy.com/courses/mealtime-makeover","type":"Course","summary":"A self-paced course to help parents reduce food anxiety and support lasting change.","tags":["constipation","course","foodanxiety","makeover","parentingtips","snackideas"]},{"id":"r14","title":"Unlocking Mealtimes Roadmap","url":"https://foodologyfeedingtherapy.com/courses/unlocking-mealtimes","type":"Course","summary":"Comprehensive evaluation and custom path based on your child's feeding profile.","tags":["ARFID","emotionaleating","mealtimes","roadmap","schoollunchtips","snackideas"]},{"id":"r15","title":"Feeding Therapy Insurance Appeal Toolkit","url":"https://foodologyfeeding.mykajabi.com/offers/dMENSeVS/checkout","type":"Tool","summary":"Templates and guides to help parents appeal insurance denials for feeding therapy.","tags":["appeal","feedingtherapy","insurance","tool","toolkit"]},{"id":"r16","title":"Food Progress Tracker","url":"https://foodologyfeeding.mykajabi.com/offers/EUHHSzVo/checkout","type":"Tool","summary":"Track your child's exposure and progress with new foods in one easy-to-use system.","tags":["mealplanning","progress","progresstracker","tracker"]},{"id":"r17","title":"Insurance Appeal for Feeding Therapy","url":"https://foodologyfeeding.mykajabi.com/offers/dMENSeVS/checkout","type":"Blog Post","summary":"A step-by-step guide to appeal an insurance denial for feeding therapy, with tips and templates.","tags":["appeal","feedingtherapy","insurance"]},{"id":"r18","title":"Why ARFID Treatment Isn't Working for My Child","url":"https://foodologyfeedingtherapy.com/why-arfid-treatment-isnt-working-for-my-child","type":"Blog Post","summary":"Uncovers the common pitfalls in ARFID treatment and what a more holistic plan should include.","tags":["ARFID","feedingstrategies","healthyeating","nutrition","treatment"]},{"id":"r19","title":"Is My Child a Picky Eater or Is It Something More?","url":"https://foodologyfeedingtherapy.com/is-my-child-a-picky-eater-or-is-it-something-more","type":"Blog Post","summary":"Helps parents distinguish between normal picky eating and signs of a deeper feeding disorder.","tags":["mealplanning","parentingtips","pickyeating","texturesensitivity"]},{"id":"r20","title":"Picky Eating: Why First Bite, No Second? ARFID & PFD","url":"https://foodologyfeedingtherapy.com/picky-eating-why-first-bite-no-second-arfid-pfd","type":"Blog Post","summary":"Explores the connection between avoidance after the first bite and conditions like ARFID or PFD.","tags":["ARFID","guthealth","oralmotor","pickyeating","sensoryissues"]},{"id":"r21","title":"Why Your Child Eats for the Feeding Therapist or the Babysitter \u2014 But Not for You","url":"https://foodologyfeedingtherapy.com/why-your-child-eats-for-the-feeding-therapist-or-the-babysitter-but-not-for-you","type":"Blog Post","summary":"Reveals the emotional and behavioral reasons kids may eat better for others than their parents.","tags":["babysitter","feedingtherapy","parentingtips","pickyeating"]},{"id":"r22","title":"Top 10 Tips for Parents of Picky Eaters","url":"https://foodologyfeedingtherapy.com/top-10-tips-for-parents-of-picky-eaters","type":"Blog Post","summary":"Christine shares ten foundational tips to help parents reduce mealtime stress and support progress.","tags":["fussyeater","parentingtips","pickyeating","sensoryissues"]},{"id":"r23","title":"Baby Formula 101","url":"https://foodologyfeedingtherapy.com/baby-formula-101-what-to-choose-what-to-avoid-and-why-it-matters","type":"Blog Post","summary":"A breakdown of baby formula options with guidance on what to look for and what to skip.","tags":["baby","formula","nutrition"]},{"id":"r24","title":"Sensory Play for Picky Eaters","url":"https://foodologyfeedingtherapy.com/sensory-play-for-picky-eaters-creative-ways-to-help-your-child-explore-food","type":"Blog Post","summary":"Ideas for using sensory play to reduce fear and build curiosity around food.","tags":["healthyeating","pickyeating","sensory","sensoryissues","sensoryplay"]},{"id":"r25","title":"Why Is No One Talking About Parent Training in Picky Eating?","url":"https://foodologyfeedingtherapy.com/why-is-no-one-talking-about-parent-training-in-picky-eating","type":"Blog Post","summary":"Makes the case for including parent training as a critical part of feeding therapy success.","tags":["ARFID","feedingtherapy","parentingtips","pickyeating"]},{"id":"r26","title":"Fun and Educational Games to Reprogram Your Child's Love of Food","url":"https://foodologyfeedingtherapy.com/fun-and-educational-games-to-reprogram-your-childs-love-of-food","type":"Blog Post","summary":"Highlights food-themed games that help children build positive associations with eating.","tags":["games","positivemealtimes","pickyeating"]},{"id":"r27","title":"The Connection Between Oral Motor Skills and Picky Eating","url":"https://foodologyfeedingtherapy.com/the-connection-between-oral-motor-skills-and-picky-eating","type":"Blog Post","summary":"Explains how oral-motor delays contribute to food refusal and what parents can do.","tags":["foodnrefusal","oralmotor","pickyeating"]},{"id":"r28","title":"Nutrient-Packed Plain Pancakes Recipe","url":"https://foodologyfeedingtherapy.com/nutrient-packed-plain-pancakes-recipe-for-picky-eaters","type":"Blog Post","summary":"A simple pancake recipe packed with hidden nutrition for selective eaters.","tags":["nutrition","pickyeating","recipe"]},{"id":"r29","title":"The Best Books to Read with a Picky or ARFID Eater","url":"https://foodologyfeedingtherapy.com/the-best-books-to-read-with-a-picky-or-arfid-eater","type":"Blog Post","summary":"A curated list of children's books that build curiosity and comfort with food.","tags":["ARFID","books","pickyeating","sensoryissues"]},{"id":"r30","title":"Your Picky Eater's Profile","url":"https://foodologyfeedingtherapy.com/your-picky-eaters-profile","type":"Blog Post","summary":"Guides parents through understanding their child's eating mindset and patterns.","tags":["feedingstrategies","parentingtips","pickyeating"]},{"id":"r31","title":"The Real Cost of Picky Eating","url":"https://foodologyfeedingtherapy.com/the-real-cost-of-picky-eating-understanding-the-financial-impact","type":"Blog Post","summary":"Breaks down the hidden and rising costs of long-term picky eating on families.","tags":["pickyeating","financial"]},{"id":"r32","title":"Navigating Texture Sensitivities","url":"https://foodologyfeedingtherapy.com/navigating-texture-sensitivities-a-complete-guide-to-strategies","type":"Blog Post","summary":"Comprehensive strategies to help children with texture aversions feel safer with food.","tags":["sensitivities","strategies","texture","texturesensitivity"]},{"id":"r33","title":"Easy Toxic Swap Outs","url":"https://foodologyfeedingtherapy.com/easy-toxic-swap-outs","type":"Blog Post","summary":"Simple swaps for reducing harmful toxins in your child's diet and home.","tags":["detox","healthyeating","nutrition"]},{"id":"r34","title":"What is the Concept of Mealtime Mindset?","url":"https://foodologyfeedingtherapy.com/what-is-the-concept-of-mealtime-mindset-and-how-can-you-use-it","type":"Blog Post","summary":"Introduces the concept of Mealtime Mindset and how it can support picky eaters.","tags":["mealtimemindset","mindset","pickyeating"]},{"id":"r35","title":"The MVP of Mealtime","url":"https://foodologyfeedingtherapy.com/the-mvp-of-mealtime-you-surprise","type":"Blog Post","summary":"Why surprise, play, and novelty are key tools to keep picky eaters engaged.","tags":["feedingstrategies","pickyeating"]},{"id":"r36","title":"Early Intervention for Feeding Disorders","url":"https://foodologyfeedingtherapy.com/early-intervention-for-feeding-disorders-matters","type":"Blog Post","summary":"Details why early therapy is crucial to prevent long-term feeding challenges.","tags":["early","feedingtherapy","oralmotor"]},{"id":"r37","title":"Cooking Fun for Kids","url":"https://foodologyfeedingtherapy.com/cooking-fun-for-kids-social-and-emotional-benefits","type":"Blog Post","summary":"Explores how cooking supports not just eating but confidence, bonding, and skill-building.","tags":["cooking","nutrition","snackideas"]},{"id":"r38","title":"What to Do When Your Kids Don't Like the Taste of Food","url":"https://foodologyfeedingtherapy.com/what-to-do-when-your-kids-dont-like-the-taste-of-food","type":"Blog Post","summary":"Tools and scripts for responding when kids reject food based on taste.","tags":["feedingtherapy","mindsetshift","taste"]},{"id":"r39","title":"ARFID vs. Picky Eating in Kids","url":"https://foodologyfeedingtherapy.com/arfid-vs-picky-eating-in-kids","type":"Blog Post","summary":"Clarifies the difference between ARFID and picky eating with practical guidance.","tags":["ARFID","healthyeating","pickyeating"]},{"id":"r40","title":"School Eating Tips","url":"https://foodologyfeedingtherapy.com/school-eating-tips-face-challenges-find-fun","type":"Blog Post","summary":"Back-to-school strategies for helping picky eaters succeed at lunchtime.","tags":["parentingtips","pickyeating","schoollunchtips"]},{"id":"r41","title":"Cooking Up Fun with Arlena Strode","url":"https://foodologyfeedingtherapy.com/cooking-up-fun-with-arlena-strode","type":"Blog Post","summary":"A collaborative conversation exploring the power of fun and creativity in the kitchen with kids.","tags":["cooking","oralmotor"]},{"id":"r42","title":"When Breastfeeding Isn't Working","url":"https://foodologyfeedingtherapy.com/when-breastfeeding-isnt-working","type":"Blog Post","summary":"Support and strategies for moms struggling with breastfeeding challenges.","tags":["breastfeeding","healthyeating"]},{"id":"r43","title":"Meal Prep: Unlocking Cognitive Growth","url":"https://foodologyfeedingtherapy.com/mealprepunlockingcognitivegrowthinchildren","type":"Blog Post","summary":"How involving kids in meal prep can improve focus, planning, and cognitive skills.","tags":["cognitive","mealplanning","mealprep"]},{"id":"r44","title":"Elevate Mealtime Moments: 10 Alternative Things to Say","url":"https://foodologyfeedingtherapy.com/elevate-mealtime-moments-10-alternative-things-to-say-to-your-child-for-a-better-dining-experience","type":"Blog Post","summary":"Swap out common food phrases for connection-building alternatives that reduce pressure.","tags":["feedingstrategies","mealtimemindset","pickyeating"]},{"id":"r45","title":"Can You Outgrow Picky Eating?","url":"https://foodologyfeedingtherapy.com/can-you-outgrow-picky-eating","type":"Blog Post","summary":"Unpacks the myth that kids will just grow out of it and what's needed instead.","tags":["mealtimemindset","pickyeating"]},{"id":"r46","title":"Is Your Child Missing This Essential Nutrient?","url":"https://foodologyfeedingtherapy.com/is-your-child-missing-this-essential-nutrient","type":"Blog Post","summary":"Focuses on identifying key nutritional gaps in selective eaters.","tags":["ARFID","nutrition","parentingtips"]},{"id":"r47","title":"Revealing Hidden Health Risks of Picky Eating","url":"https://foodologyfeedingtherapy.com/revealing-hidden-health-risks-of-picky-eating-kids","type":"Blog Post","summary":"Looks beneath the surface at the long-term health effects of limited diets.","tags":["ARFID","fussyeater","pickyeating"]},{"id":"r48","title":"3 Reasons Why Fish Oil Can Change Your Child's Life","url":"https://foodologyfeedingtherapy.com/3-reasons-why-fish-oil-can-change-your-childs-life","type":"Blog Post","summary":"Explores how omega-3s can benefit focus, mood, and sensory regulation.","tags":["fishoil","sensoryissues"]},{"id":"r49","title":"Baby's First Bites: A Guide to Starting Solids","url":"https://foodologyfeedingtherapy.com/babys-first-bites-a-guide-to-starting-solids","type":"Blog Post","summary":"Guides parents through the early stages of introducing solids with confidence.","tags":["baby","feedingstrategies","solids"]},{"id":"r50","title":"ADHD, Mouth Breathing, and Feeding","url":"https://foodologyfeedingtherapy.com/adhd-mouthbreathing-feeding-correlation","type":"Blog Post","summary":"Links ADHD, airway health, and picky eating through an integrative lens.","tags":["adhd","mouthbreathing","pickyeating"]},{"id":"r51","title":"Oral Motor Red Flags","url":"https://foodologyfeedingtherapy.com/oral-motor-red-flags","type":"Blog Post","summary":"Clear signs that your child may be struggling with oral-motor skills impacting feeding.","tags":["oralmotor","sensoryissues"]},{"id":"r52","title":"5 Ways to Get Your Picky Eater Involved in the Kitchen","url":"https://foodologyfeedingtherapy.com/5-ways-to-get-your-picky-eater-involved-in-the-kitchen","type":"Blog Post","summary":"Low-pressure ways to build comfort and confidence by inviting your child to help cook.","tags":["feedingstrategies","pickyeating","routine"]},{"id":"r53","title":"Why Forcing Kids To Eat Backfires","url":"https://foodologyfeedingtherapy.com/forcing-kids-to-eat","type":"Blog Post","summary":"Explores why forcing food increases resistance and what to do instead.","tags":["feedingstrategies","gentlefeeding","pressure"]},{"id":"r54","title":"Autism and Picky Eating","url":"https://foodologyfeedingtherapy.com/autism-and-picky-eating","type":"Blog Post","summary":"Dives into feeding challenges for autistic children and compassionate strategies.","tags":["autism","pickyeating","sensory"]},{"id":"r55","title":"5 Feeding Mistakes Parents Make","url":"https://foodologyfeedingtherapy.com/feeding-mistakes-parents-make","type":"Blog Post","summary":"Common feeding mistakes and what to do instead for better mealtime success.","tags":["feedingmistakes","gentlefeeding","parentingtips"]},{"id":"r56","title":"Does Tongue Tie Cause Picky Eating?","url":"https://foodologyfeedingtherapy.com/does-tongue-tie-cause-picky-eating","type":"Blog Post","summary":"Explores how tongue tie can interfere with oral motor development and feeding.","tags":["tonguetie","oralmotor","pickyeating"]},{"id":"r57","title":"How to Get Feeding Therapy Covered by Insurance","url":"https://foodologyfeedingtherapy.com/insurance-appeal-for-feeding-therapy","type":"Blog Post","summary":"Walks parents through appealing insurance denials for feeding therapy with tips and templates.","tags":["appeal","feedingtherapy","insurance"]},{"id":"r58","title":"What I Wish Every Parent Knew About Feeding Therapy","url":"https://foodologyfeedingtherapy.com/feeding-therapy-for-picky-eaters","type":"Blog Post","summary":"Key things parents should understand before starting feeding therapy for picky eaters.","tags":["feedingtherapy","holisticfeeding","pickyeating"]},{"id":"r59","title":"The 4 Best Feeding Therapy Programs","url":"https://foodologyfeedingtherapy.com/best-feeding-therapy-programs","type":"Blog Post","summary":"Reviews four effective feeding therapy programs and helps parents choose the right fit.","tags":["ARFID","feedingtherapy","programs"]},{"id":"r60","title":"When to Worry About Picky Eating","url":"https://foodologyfeedingtherapy.com/when-to-worry-about-picky-eating","type":"Blog Post","summary":"Helps parents recognize red flags that picky eating may indicate a deeper feeding issue.","tags":["ARFID","pickyeating","redflags"]},{"id":"r61","title":"How to Help A Teen Picky Eater During Puberty","url":"https://foodologyfeedingtherapy.com/teen-picky-eater-puberty-help","type":"Blog Post","summary":"Practical tips to make mealtimes better for teens struggling with picky eating during puberty.","tags":["puberty","teens","pickyeating"]},{"id":"r62","title":"How Many Foods Should A Child Eat?","url":"https://foodologyfeedingtherapy.com/how-many-foods-should-a-child-eat","type":"Blog Post","summary":"Learn how many foods a child should eat at different ages and red flags for picky eating.","tags":["foods","normalfoodcount","pickyeating"]},{"id":"r63","title":"Feeding Holiday Gift Guide 2025","url":"https://foodologyfeedingtherapy.com/holiday-gifts-for-picky-eaters","type":"Blog Post","summary":"20+ feeding-friendly holiday gifts for picky eaters that make mealtimes easier and more fun.","tags":["gifts","holiday","pickyeating"]},{"id":"r64","title":"Is Picky Eating Genetic? (Blog)","url":"https://foodologyfeedingtherapy.com/is-picky-eating-genetic","type":"Blog Post","summary":"Discover the key genes like MTHFR and taste receptors and signs to watch for.","tags":["genetic","MTHFR","pickyeating"]},{"id":"r65","title":"How to Teach Your Child to Chew","url":"https://foodologyfeedingtherapy.com/teach-your-child-to-chew-oral-motor-strategies","type":"Blog Post","summary":"Build jaw strength, tongue coordination, and confidence with oral motor strategies.","tags":["chewing","oralmotor","feedingtherapy"]},{"id":"r66","title":"The #1 Overlooked Cause of Extreme Picky Eating","url":"https://foodologyfeedingtherapy.com/extreme-picky-eating-in-kids","type":"Blog Post","summary":"Discover how gut health could be the missing piece to helping your child eat better.","tags":["extremepickyeating","guthealth","pickyeating"]},{"id":"r67","title":"When Doctors Say Everything Is Normal but Your Child Still Refuses Food","url":"https://foodologyfeedingtherapy.com/child-not-eating-but-tests-are-normal","type":"Blog Post","summary":"What routine testing misses and why deeper answers matter when your child won't eat.","tags":["bloodwork","GItests","pickyeating"]},{"id":"r68","title":"Can Food Sensitivities Cause Picky Eating?","url":"https://foodologyfeedingtherapy.com/can-food-sensitivities-cause-picky-eating","type":"Blog Post","summary":"How food sensitivities (not just allergies) can make eating hard for kids.","tags":["foodallergies","foodsensitivities","pickyeating"]},{"id":"r69","title":"Help! My Child Only Eats 5 Foods","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149056288","type":"Podcast Episode","summary":"If your child has fewer than five foods in their diet, this episode explains the deeper causes of extreme food refusal and what actually works in therapy.","tags":["ARFID","feedingtherapy","foodrefusal","pickyeating"]},{"id":"r70","title":"What I Wish Every Parent Knew Before Starting Feeding Therapy","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149052459","type":"Podcast Episode","summary":"This episode reveals what feeding therapy should really look like and red flags to watch for.","tags":["feedingtherapy","parentingtips","pickyeating"]},{"id":"r71","title":"Don't Let Picky Eating Ruin The BBQ","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149039214","type":"Podcast Episode","summary":"Strategies to help your child feel safe and calm at summer cookouts and social food events.","tags":["pickyeating","socialfeeding","summer"]},{"id":"r72","title":"Summer Sensory Fun That Helps With Picky Eating","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149039212","type":"Podcast Episode","summary":"Five fun sensory play ideas that spark curiosity and help kids feel more comfortable around food.","tags":["pickyeating","sensory","summer"]},{"id":"r73","title":"Vacation Mode Without Meltdowns","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149039206","type":"Podcast Episode","summary":"Practical feeding tips to help avoid food struggles while traveling with your family.","tags":["feedingtherapy","travel","pickyeating"]},{"id":"r74","title":"Does Summer Make Picky Eating Worse?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149039201","type":"Podcast Episode","summary":"5 strategies to help kids stay nourished and explore new foods during summer.","tags":["pickyeating","summer","strategies"]},{"id":"r75","title":"Raising a Food Adventurer: 7 Micro Shifts","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149022921","type":"Podcast Episode","summary":"Seven gentle shifts to help your child move from fearful to curious eater.","tags":["foodanxiety","pickyeating","strategies"]},{"id":"r76","title":"Should You Worry About Your Toddler's Food Strike?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149022919","type":"Podcast Episode","summary":"Covers the difference between normal toddler food strikes and red flags for feeding challenges.","tags":["pickyeating","toddler","normalvsnot"]},{"id":"r77","title":"Picky Eating and Anxiety","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149022917","type":"Podcast Episode","summary":"Explores how anxiety, sensory overload, and control impact picky eating.","tags":["anxiety","foodanxiety","pickyeating"]},{"id":"r78","title":"The 5 Hidden Reasons Your Child Struggles With Food","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2","type":"Podcast Episode","summary":"Christine reveals 5 overlooked causes of feeding struggles from nervous system to trauma.","tags":["pickyeating","nervousystem","trauma"]},{"id":"r79","title":"From Terrified of Food to Steak","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149009403","type":"Podcast Episode","summary":"An inspiring client success story showing how a child overcame extreme food fear.","tags":["parentingtips","pickyeating","success"]},{"id":"r80","title":"I Thought My Kid Would Never Be a Picky Eater","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149009393","type":"Podcast Episode","summary":"Christine opens up about her personal journey with her own child's feeding challenges.","tags":["pickyeating","personalstory"]},{"id":"r81","title":"Why A First Bite May Not Lead To A Second","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148994460","type":"Podcast Episode","summary":"Breaks down the reasons why kids stop after one bite with practical tips for progress.","tags":["ARFID","pickyeating","sensoryissues"]},{"id":"r82","title":"Your Child is Your Mirror","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148994456","type":"Podcast Episode","summary":"How children mirror parent behavior and how small shifts can spark big progress at mealtimes.","tags":["mealtimemindset","parentingtips","pickyeating"]},{"id":"r83","title":"Healing from the Inside Out: Gut Health and Detox","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148990832","type":"Podcast Episode","summary":"Gut health, toxins, and why internal healing plays a major role in feeding progress.","tags":["detox","guthealth","healthyeating"]},{"id":"r84","title":"Why Your Child Eats For The Therapist But Not for You","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148972628","type":"Podcast Episode","summary":"Unpacks the psychology behind why children may eat better for therapists.","tags":["mealtimemindset","oralmotor","pickyeating"]},{"id":"r85","title":"The Science of Trust: Connection is Key","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148972626","type":"Podcast Episode","summary":"How trust and connection can ease food refusal through brain science.","tags":["connection","foodrefusal","parentingtips"]},{"id":"r86","title":"How Feeling Safe Encourages Kids To Try New Foods","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148954099","type":"Podcast Episode","summary":"Nervous system safety, sensory trauma, and therapeutic strategies to support food exploration.","tags":["foodanxiety","safety","sensoryissues"]},{"id":"r87","title":"The Secret To Fast Progress","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148954098","type":"Podcast Episode","summary":"What drives rapid progress in therapy: daily practice, routines, and committed parents.","tags":["feedingtherapy","parentingtips","progress"]},{"id":"r88","title":"New Year, New Mealtime Goals","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148908884","type":"Podcast Episode","summary":"How to set realistic goals and build long-term success at the table.","tags":["eatinghabits","goals","positivemealtimes"]},{"id":"r89","title":"Beyond the Toy Aisle: Creative Gift Ideas for Picky Eaters","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148908883","type":"Podcast Episode","summary":"Gift ideas that support feeding skills, sensory play, and mindset shifts.","tags":["gifts","mealtimemindset","sensoryissues"]},{"id":"r90","title":"Feeling Overwhelmed by Thanksgiving with a Picky Eater?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148908880","type":"Podcast Episode","summary":"7 strategies to help make holiday meals less stressful and more connected.","tags":["ARFID","familymeals","holiday","pickyeating"]},{"id":"r91","title":"Top 10 Tips For Parents of Picky Eaters (Podcast)","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148899048","type":"Podcast Episode","summary":"10 foundational tips that help reduce pressure and improve mealtime dynamics.","tags":["pickyeating","parentingtips"]},{"id":"r92","title":"Anxiety and Eating: Helping Children With Food-Related Anxiety","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148898600","type":"Podcast Episode","summary":"Calming tools to reduce mealtime stress for children with food anxiety.","tags":["anxiety","foodanxiety","parentingtips"]},{"id":"r93","title":"5 Strategies To Reduce Your Child's Anxiety Around Food","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148896272","type":"Podcast Episode","summary":"Actionable tips for helping children feel safer and calmer around new foods.","tags":["anxiety","mealplanning","strategies"]},{"id":"r94","title":"Sensory Play for Picky Eaters (Podcast)","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148878935","type":"Podcast Episode","summary":"Practical ways to use sensory play to build comfort with food.","tags":["parentingtips","sensory","sensoryissues"]},{"id":"r95","title":"Will My Picky Eater Starve?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148878933","type":"Podcast Episode","summary":"Covers nutritional concerns vs. true starvation risk when fear is involved in food refusal.","tags":["foodanxiety","foodrefusal","nutrition"]},{"id":"r96","title":"Genetics and Picky Eating","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148878931","type":"Podcast Episode","summary":"New research on the role of genetics vs. environment in the development of picky eating.","tags":["genetic","pickyeating","research"]},{"id":"r97","title":"Why Does No One Talk About Parent Training In Picky Eating","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148856365","type":"Podcast Episode","summary":"Makes the case for structured parent training as a critical component of feeding success.","tags":["feedingstrategies","parentingtips","pickyeating"]},{"id":"r98","title":"Don't Make This Mistake When Picking New Food","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148856361","type":"Podcast Episode","summary":"Food chaining and using sensory preferences to guide food introduction.","tags":["foodanxiety","pickyeating","sensoryissues"]},{"id":"r99","title":"Don't Believe This Picky Eating Myth","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148856356","type":"Podcast Episode","summary":"Debunks the myth that kids will eat when hungry, explaining how fear overrides hunger cues.","tags":["ARFID","pickyeating","powerstruggles"]},{"id":"r100","title":"Can Picky Eating Be Prevented?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148798723","type":"Podcast Episode","summary":"Developmental phases vs. deeper issues and how to support prevention through food exposure.","tags":["ARFID","pickyeating","prevention"]},{"id":"r101","title":"How Is Picky Eating Related to Autism?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148798722","type":"Podcast Episode","summary":"The role of sensory issues, oral motor challenges, and gut health in picky eating for autism.","tags":["autism","guthealth","oralmotor","sensoryissues"]},{"id":"r102","title":"When Is Picky Eating Normal?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148776533","type":"Podcast Episode","summary":"Helps parents distinguish between normal picky phases and red flags for intervention.","tags":["parentingtips","pickyeating","redflags"]},{"id":"r103","title":"What is a Holistic Functional Feeding Therapist?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148776531","type":"Podcast Episode","summary":"How a holistic approach to feeding therapy differs from behavior-based strategies.","tags":["feedingtherapy","holisticfeeding","mealtimemindset"]},{"id":"r104","title":"Why Feeding Therapy Hasn't Worked Yet","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148745875","type":"Podcast Episode","summary":"Covers therapist qualifications and the four feeding pillars in therapy that works.","tags":["feedingtherapy","parentingtips"]},{"id":"r105","title":"From Fearful To Foodie","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148745874","type":"Podcast Episode","summary":"Introduces Christine's signature framework and how to identify your child's feeding level.","tags":["feedingtherapy","pickyeating","sensoryissues"]},{"id":"r106","title":"The 4 Pillars of Feeding Success","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148716905","type":"Podcast Episode","summary":"The four pillars of feeding success: gut health, sensory, oral motor, and mindset.","tags":["guthealth","mealtimemindset","oralmotor","sensoryissues"]},{"id":"r107","title":"5 Ways To Incorporate Superfoods Into Meals","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148669040","type":"Podcast Episode","summary":"Practical strategies to add nutrient-dense superfoods to meals for picky eaters.","tags":["feedingstrategies","mealprep","nutrition"]},{"id":"r108","title":"Top 10 Nutrient Packed Snacks","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148669007","type":"Podcast Episode","summary":"Easy, portable, and healthy snack ideas for picky eaters.","tags":["healthyeating","nutrition","snackideas"]},{"id":"r109","title":"10 Positive Food Routines To Start This Summer","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148669006","type":"Podcast Episode","summary":"Fun and nourishing routines to boost summer mealtimes.","tags":["mealtimemindset","pickyeating","routine"]},{"id":"r110","title":"What Is The Gap Period?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148630280","type":"Podcast Episode","summary":"Defines the gap period and how to move from stuck to growth in your child's eating journey.","tags":["pickyeating","progress"]},{"id":"r111","title":"The Opportunity Cost of Waiting Out Your Picky Eater","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148630274","type":"Podcast Episode","summary":"What children miss out on when parents wait too long to intervene.","tags":["parentingtips","pickyeating"]},{"id":"r112","title":"Navigating Constipation in Picky Eaters","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627188","type":"Podcast Episode","summary":"Deep dive into constipation in picky eaters\u2014root causes, risks of meds, and natural remedies.","tags":["constipation","guthealth","pickyeating"]},{"id":"r113","title":"Navigating Tummy Troubles: Soothing Reflux","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627189","type":"Podcast Episode","summary":"Pediatric reflux in picky eaters, challenging common prescriptions and highlighting natural solutions.","tags":["pickyeating","reflux","toddlermeals"]},{"id":"r114","title":"Nurturing Picky Eaters Through Family Meals","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627190","type":"Podcast Episode","summary":"The power of family meals in modeling healthy eating, reducing anxiety, and establishing routines.","tags":["familymeals","healthyeating","routine"]},{"id":"r115","title":"Unpacking ARFID And Other Common Feeding Terms","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627195","type":"Podcast Episode","summary":"Clarifies feeding terms like ARFID and food aversion while stressing symptom-based support.","tags":["ARFID","feedingtherapy","foodrefusal"]},{"id":"r116","title":"How To Address Sensory Issues At Home","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627197","type":"Podcast Episode","summary":"Practical ways to support children's sensory sensitivities at mealtimes.","tags":["ARFID","sensory","sensoryissues"]},{"id":"r117","title":"How To Address Oral Motor At Home","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627198","type":"Podcast Episode","summary":"Home-based strategies for improving oral motor skills to support eating and speech.","tags":["foodrefusal","oralmotor"]},{"id":"r118","title":"The 4 Pillars (Podcast)","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627196","type":"Podcast Episode","summary":"A channeled episode sharing insights on healing your child's relationship with food.","tags":["mealtimemindset","mindsetshift"]},{"id":"r119","title":"The Real MVP in Tackling Picky Eating","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627201","type":"Podcast Episode","summary":"Parents are the most powerful change-makers in feeding therapy.","tags":["feedingtherapy","parentingtips","pickyeating"]},{"id":"r120","title":"5 Myths About Starting Solids With Infants","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627220","type":"Podcast Episode","summary":"Dispels myths around introducing solids to infants.","tags":["feedingtherapy","solids"]},{"id":"r121","title":"Picky Eating and Gut Health","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627233","type":"Podcast Episode","summary":"Interview with a gut health expert on how the microbiome affects picky eating.","tags":["guthealth","pickyeating"]},{"id":"r122","title":"Vitamin Deficiency and Picky Eating","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627236","type":"Podcast Episode","summary":"How nutritional deficiencies can drive picky eating and how to identify them.","tags":["nutrition","pickyeating","vitamins"]},{"id":"r123","title":"Tongue Ties and Picky Eating","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627239","type":"Podcast Episode","summary":"The controversy and history between tongue ties and picky eating.","tags":["pickyeating","tonguetie"]},{"id":"r124","title":"Why Your Child Is Picky In the First Place","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627240","type":"Podcast Episode","summary":"How kids even become picky and what to do about it.","tags":["mealtimemindset","pickyeating"]},{"id":"r125","title":"How Long Does Feeding Therapy Take","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627245","type":"Podcast Episode","summary":"How long feeding therapy takes to work with time frame estimates.","tags":["feedingtherapy","parentingtips"]},{"id":"r126","title":"Making Meal Prep Fun and Easy","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2148627247","type":"Podcast Episode","summary":"All things meal prep and how it helps picky eaters actually eat the food.","tags":["mealprep","pickyeating"]},{"id":"r127","title":"Is it normal to bring safe foods everywhere?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149056315","type":"Podcast Episode","summary":"What safe foods are, why kids rely on them, and when it becomes a barrier to progress.","tags":["ARFID","pickyeating","safefoods"]},{"id":"r128","title":"5 Most Common Feeding Mistakes","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149063129","type":"Podcast Episode","summary":"The five most common mistakes parents make when trying to help a picky eater.","tags":["feedingmistakes","mealtimemindset","pickyeating"]},{"id":"r129","title":"The #1 Reason ABA Falls Short in Feeding","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149063131","type":"Podcast Episode","summary":"Why ABA-based feeding focuses on compliance, not true progress.","tags":["ABA","feedingtherapy","holisticfeeding"]},{"id":"r130","title":"How to Move From I Can't to How Can I?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149063133","type":"Podcast Episode","summary":"Shift your mindset from I can't to How can I so you can start finding solutions.","tags":["mealtimemindset","mindsetshift","parentingtips"]},{"id":"r131","title":"The 4 Reasons Most Feeding Approaches Fail","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149063134","type":"Podcast Episode","summary":"Why most common approaches to picky eating don't work and what's really missing.","tags":["ARFID","feedingtherapy","holisticfeeding"]},{"id":"r132","title":"3 Reasons Forcing A Bite Backfires","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149063140","type":"Podcast Episode","summary":"Why pressure almost always backfires and strategies that build trust instead.","tags":["gentlefeeding","pickyeating","pressure"]},{"id":"r133","title":"3 Signs Waiting It Out is Okay - And 3 Signs It's Not","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149063141","type":"Podcast Episode","summary":"Three signs to wait and three red flags that mean it's time to act.","tags":["pickyeating","redflags","waitingout"]},{"id":"r134","title":"4 Hidden Medical Reasons Behind Picky Eating","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149063143","type":"Podcast Episode","summary":"Five hidden medical reasons children refuse food including oral motor, gut, and toxins.","tags":["guthealth","medical","oralmotor","pickyeating"]},{"id":"r135","title":"Is Picky Eating Genetic? (Podcast)","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149081333","type":"Podcast Episode","summary":"What science really says about genetics and eating including MTHFR and taste receptor genes.","tags":["genetic","MTHFR","pickyeating"]},{"id":"r136","title":"Teens, Puberty, and Picky Eating","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149094576","type":"Podcast Episode","summary":"For parents of tweens and teens whose picky eating intensifies during puberty.","tags":["pickyeating","puberty","teens"]},{"id":"r137","title":"The Spooky Truth About Halloween Candy","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149097801","type":"Podcast Episode","summary":"Guilt-free strategies for Halloween candy including Switch Witch and better swaps.","tags":["candy","halloween","treats"]},{"id":"r138","title":"7 Surprising Strategies to Help Your Child Try More Foods","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149101926","type":"Podcast Episode","summary":"Seven surprising strategies that help kids feel safe, curious, and confident around food.","tags":["pickyeating","strategies","tips"]},{"id":"r139","title":"Should My Child Take a Supplement?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149105094","type":"Podcast Episode","summary":"Pros, cons, and hidden pitfalls of children's vitamins and supplements.","tags":["nutrition","supplements","vitamins"]},{"id":"r140","title":"Why Won't My Child Gain Weight?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149111499","type":"Podcast Episode","summary":"Real reasons kids struggle to gain weight from hunger cues to gut inflammation.","tags":["guthealth","nutrition","weightgain"]},{"id":"r141","title":"Is Your Child Really ADHD \u2014 or Something Else?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149114728","type":"Podcast Episode","summary":"Explores hidden factors that can make kids look ADHD including breathing and gut issues.","tags":["ADHD","guthealth","mouthbreathing"]},{"id":"r142","title":"What Does Food Sensitivity Have To Do With Picky Eating?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149147481","type":"Podcast Episode","summary":"How food sensitivities and gut inflammation quietly interfere with appetite and food acceptance.","tags":["foodanxiety","foodsensitivities","guthealth"]},{"id":"r143","title":"Can You Prevent Cow's Milk Protein Allergy?","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149147607","type":"Podcast Episode","summary":"Signs of cow's milk protein allergy, infant gut health, and early recognition strategies.","tags":["cowsmilk","dairysensitive","infantgut"]},{"id":"r144","title":"Why So Many Kids Have Allergies Now","url":"https://foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes/2149166351","type":"Podcast Episode","summary":"Why allergies have skyrocketed and how early gut discomfort can train the brain to avoid food.","tags":["allergies","guthealth","pickyeating"]},{"id":"r145","title":"Food Explorer Coloring Log for Kids","url":"https://www.amazon.com/dp/B0FQPDL26W","type":"Book","summary":"Help your child turn trying new foods into a fun adventure with this coloring log for toddlers.","tags":["foodexploration","lowpressure","toddler"]},{"id":"r146","title":"Food Explorer Log Book","url":"https://www.amazon.com/dp/B0CN3NMZTV","type":"Book","summary":"Fun interactive log book to help children track and reflect on new foods they try without pressure.","tags":["foodexploration","lowpressure","toddler"]},{"id":"r147","title":"5 Minute Sensory Plan","url":"https://foodologyfeeding.mykajabi.com/sensory-mealtime-plan","type":"Tool","summary":"A free Sensory Mealtime Plan with a simple 3-step routine and sensory warmups to calm the system before food.","tags":["free","sensory","sensoryplan"]},{"id":"r148","title":"Say It & Play It Toolkit","url":"https://foodologyfeeding.mykajabi.com/offers/iDRRxhBe/checkout","type":"Tool","summary":"Everything you need to make food exploration safe, fun, and pressure-free with scripts and activities.","tags":["feedingtherapy","nopressure","sensoryplay"]},{"id":"r149","title":"FREE Videos, Books, & Strategies For Teens and Tweens","url":"https://foodologyfeeding.mykajabi.com/opt-in-1a2ea1e6-d0c1-46d6-ad2f-6a9c5ffd8fae","type":"Tool","summary":"Curated videos, apps, books, scripts, and tools specifically for teens who are picky eaters.","tags":["free","olderkids","teens","tweens"]},{"id":"r150","title":"Free Ultimate Parent Guide","url":"https://foodologyfeeding.mykajabi.com/opt-in-a8d2ddd1-d325-42a1-83cb-d1346e7cd59d","type":"Tool","summary":"Download the free guide that shows you what's really going on and what to do next.","tags":["free","guide","parentguide"]}];
 
-let resources = [];
-let activeType = 'All';
-let editingId = null;
+let resources = [], activeType = 'All', isAdmin = false, editingId = null;
 
-// ── STORAGE ───────────────────────────────────────────────────────────────
-async function loadResources(){
-  try {
-    const result = await window.storage.get('resources');
-    if(result && result.value){
-      resources = JSON.parse(result.value);
-    } else {
-      resources = DEFAULT_RESOURCES;
-      await saveToStorage();
-    }
-  } catch(e) {
-    resources = DEFAULT_RESOURCES;
+// ── INIT ──────────────────────────────────────────────────────────────────
+async function init(){
+  try{
+    const r = await window.storage.get('foodology_resources');
+    resources = r ? JSON.parse(r.value) : DEFAULT;
+  }catch(e){ resources = [...DEFAULT]; }
+  renderPills(); filter();
+}
+
+async function save(){
+  try{ await window.storage.set('foodology_resources', JSON.stringify(resources)); }catch(e){}
+}
+
+// ── ADMIN ─────────────────────────────────────────────────────────────────
+function toggleAdmin(){
+  if(isAdmin){ logoutAdmin(); return; }
+  document.getElementById('pwOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('pwInput').focus(),100);
+}
+
+function checkPw(){
+  const v = document.getElementById('pwInput').value;
+  if(v === ADMIN_PW){
+    isAdmin = true;
+    document.getElementById('pwOverlay').classList.remove('open');
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwErr').textContent = '';
+    document.getElementById('adminToggle').classList.add('active');
+    document.getElementById('adminToggle').textContent = 'Admin ✓';
+    document.getElementById('adminBar').style.display = 'flex';
+    filter();
+  } else {
+    document.getElementById('pwErr').textContent = 'Incorrect password.';
+    document.getElementById('pwInput').value = '';
   }
-  render();
 }
 
-async function saveToStorage(){
-  try { await window.storage.set('resources', JSON.stringify(resources)); } catch(e){}
+function logoutAdmin(){
+  isAdmin = false;
+  document.getElementById('adminToggle').classList.remove('active');
+  document.getElementById('adminToggle').textContent = 'Admin';
+  document.getElementById('adminBar').style.display = 'none';
+  filter();
 }
 
-// ── RENDER ────────────────────────────────────────────────────────────────
-function render(){
-  renderPills();
-  filterResources();
-}
-
+// ── FILTER ────────────────────────────────────────────────────────────────
 function renderPills(){
-  const pills = document.getElementById('filterPills');
-  pills.innerHTML = TYPES.map(t=>
-    `<button class="pill-btn${activeType===t?' active':''}" onclick="setType('${t}')">${t}</button>`
+  document.getElementById('pills').innerHTML = TYPES.map(t=>
+    `<button class="pill${activeType===t?' active':''}" onclick="setType('${t}')">${t}</button>`
   ).join('');
 }
 
-function setType(t){
-  activeType = t;
-  renderPills();
-  filterResources();
-}
+function setType(t){ activeType=t; renderPills(); filter(); }
 
-function filterResources(){
+function filter(){
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
   const filtered = resources.filter(r=>{
-    const matchType = activeType === 'All' || r.type === activeType;
-    const matchSearch = !q ||
-      r.title.toLowerCase().includes(q) ||
+    const matchT = activeType==='All' || r.type===activeType;
+    const matchQ = !q || r.title.toLowerCase().includes(q) ||
       (r.summary||'').toLowerCase().includes(q) ||
-      (r.tags||[]).some(tag=>tag.toLowerCase().includes(q));
-    return matchType && matchSearch;
+      (r.tags||[]).some(t=>t.toLowerCase().includes(q));
+    return matchT && matchQ;
   });
-
-  document.getElementById('resultsCount').textContent =
-    `${filtered.length} resource${filtered.length!==1?'s':''} found`;
-
-  const grid = document.getElementById('resourceGrid');
+  document.getElementById('count').textContent = `${filtered.length} resource${filtered.length!==1?'s':''} found`;
+  const grid = document.getElementById('grid');
   if(!filtered.length){
-    grid.innerHTML = `<div class="empty" style="grid-column:1/-1">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <p>No resources match your search.</p>
-    </div>`;
-    return;
+    grid.innerHTML=`<div class="empty"><p>No resources match your search.</p></div>`;return;
   }
-
+  const typeSlug = t => t.toLowerCase().replace(/\s+/g,'-');
   grid.innerHTML = filtered.map(r=>`
-    <div class="resource-card">
-      <p class="card-type ${TYPE_SLUG(r.type)}">${r.type}</p>
-      <p class="card-title">${r.title}</p>
-      ${r.summary?`<p class="card-summary">${r.summary}</p>`:''}
-      ${r.tags&&r.tags.length?`<div class="card-tags">${r.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto">
+    <div class="card">
+      <p class="card-type ${typeSlug(r.type)}">${r.type}</p>
+      <p class="card-title">${esc(r.title)}</p>
+      ${r.summary?`<p class="card-summary">${esc(r.summary)}</p>`:''}
+      ${r.tags&&r.tags.length?`<div class="card-tags">${r.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>`:''}
+      <div class="card-footer">
         <a class="card-link" href="${r.url}" target="_blank" rel="noopener">
           View resource
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </a>
-        <div style="display:flex;gap:.5rem">
-          <button onclick="editResource('${r.id}')" style="background:none;border:none;cursor:pointer;color:#aaa;font-size:.75rem;font-family:'DM Sans',sans-serif">Edit</button>
-          <button onclick="deleteResource('${r.id}')" style="background:none;border:none;cursor:pointer;color:#daa;font-size:.75rem;font-family:'DM Sans',sans-serif">Delete</button>
-        </div>
+        ${isAdmin?`<div class="card-actions">
+          <button class="edit-btn" onclick="editResource('${r.id}')">Edit</button>
+          <button class="del-btn" onclick="deleteResource('${r.id}')">Delete</button>
+        </div>`:''}
       </div>
     </div>
   `).join('');
 }
 
-// ── MODAL ─────────────────────────────────────────────────────────────────
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── CRUD ──────────────────────────────────────────────────────────────────
 function openModal(id=null){
-  editingId = id;
-  document.getElementById('modalTitle').textContent = id ? 'Edit Resource' : 'Add Resource';
+  editingId=id;
+  document.getElementById('modalTitle').textContent = id?'Edit Resource':'Add Resource';
   if(id){
-    const r = resources.find(x=>x.id===id);
-    document.getElementById('fTitle').value = r.title;
-    document.getElementById('fUrl').value = r.url;
-    document.getElementById('fType').value = r.type;
-    document.getElementById('fSummary').value = r.summary||'';
-    document.getElementById('fTags').value = (r.tags||[]).join(', ');
-  } else {
-    document.getElementById('fTitle').value='';
-    document.getElementById('fUrl').value='';
+    const r=resources.find(x=>x.id===id);
+    document.getElementById('fTitle').value=r.title;
+    document.getElementById('fUrl').value=r.url;
+    document.getElementById('fType').value=r.type;
+    document.getElementById('fSummary').value=r.summary||'';
+    document.getElementById('fTags').value=(r.tags||[]).join(', ');
+  }else{
+    ['fTitle','fUrl','fSummary','fTags'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('fType').value='';
-    document.getElementById('fSummary').value='';
-    document.getElementById('fTags').value='';
   }
-  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('editOverlay').classList.add('open');
 }
 
-function closeModal(){
-  document.getElementById('modalOverlay').classList.remove('open');
-  editingId = null;
-}
+function closeEditModal(){ document.getElementById('editOverlay').classList.remove('open'); editingId=null; }
 
 async function saveResource(){
-  const title = document.getElementById('fTitle').value.trim();
-  const url = document.getElementById('fUrl').value.trim();
-  const type = document.getElementById('fType').value;
-  const summary = document.getElementById('fSummary').value.trim();
-  const tagsRaw = document.getElementById('fTags').value.trim();
-  const tags = tagsRaw ? tagsRaw.split(',').map(t=>t.trim()).filter(Boolean) : [];
-
-  if(!title||!url||!type){ alert('Please fill in Title, URL, and Type.'); return; }
-
+  const title=document.getElementById('fTitle').value.trim();
+  const url=document.getElementById('fUrl').value.trim();
+  const type=document.getElementById('fType').value;
+  const summary=document.getElementById('fSummary').value.trim();
+  const tags=document.getElementById('fTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  if(!title||!url||!type){alert('Please fill in Title, URL, and Type.');return;}
   if(editingId){
-    const idx = resources.findIndex(r=>r.id===editingId);
-    if(idx>-1) resources[idx] = {...resources[idx], title, url, type, summary, tags};
-  } else {
-    resources.unshift({ id:'r'+Date.now(), title, url, type, summary, tags });
+    const i=resources.findIndex(r=>r.id===editingId);
+    if(i>-1) resources[i]={...resources[i],title,url,type,summary,tags};
+  }else{
+    resources.unshift({id:'r'+Date.now(),title,url,type,summary,tags});
   }
-
-  await saveToStorage();
-  closeModal();
-  render();
+  await save(); closeEditModal(); filter();
 }
 
 function editResource(id){ openModal(id); }
 
 async function deleteResource(id){
-  if(!confirm('Delete this resource?')) return;
-  resources = resources.filter(r=>r.id!==id);
-  await saveToStorage();
-  render();
+  if(!confirm('Delete this resource?'))return;
+  resources=resources.filter(r=>r.id!==id);
+  await save(); filter();
 }
 
-// ── EXPORT CSV ────────────────────────────────────────────────────────────
+// ── EXPORT ────────────────────────────────────────────────────────────────
 function exportCSV(){
-  const rows = [['Title','URL','Type','Summary','Tags']];
-  resources.forEach(r=>{
-    rows.push([
-      `"${(r.title||'').replace(/"/g,'""')}"`,
-      `"${(r.url||'').replace(/"/g,'""')}"`,
-      `"${(r.type||'').replace(/"/g,'""')}"`,
-      `"${(r.summary||'').replace(/"/g,'""')}"`,
-      `"${(r.tags||[]).join(', ').replace(/"/g,'""')}"`,
-    ]);
-  });
-  const csv = rows.map(r=>r.join(',')).join('\n');
-  const blob = new Blob([csv],{type:'text/csv'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'Foodology_Resources.csv';
-  a.click();
+  const rows=[['Title','URL','Type','Summary','Tags']];
+  resources.forEach(r=>rows.push([
+    `"${(r.title||'').replace(/"/g,'""')}"`,
+    `"${(r.url||'').replace(/"/g,'""')}"`,
+    `"${(r.type||'').replace(/"/g,'""')}"`,
+    `"${(r.summary||'').replace(/"/g,'""')}"`,
+    `"${(r.tags||[]).join(', ').replace(/"/g,'""')}"`,
+  ]));
+  const blob=new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='Foodology_Resources.csv'; a.click();
 }
 
-// Close modal on overlay click
-document.getElementById('modalOverlay').addEventListener('click', e=>{
-  if(e.target===e.currentTarget) closeModal();
+// Close overlays on background click
+['pwOverlay','editOverlay'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('open');});
 });
 
-// ── INIT ──────────────────────────────────────────────────────────────────
-loadResources();
+init();
 </script>
 </body>
 </html>
