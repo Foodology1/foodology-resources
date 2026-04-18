@@ -230,21 +230,19 @@ const DEFAULT=[{"id":"r1","title":"The Next Bite Plan","url":"https://try-coast-
 let resources=[],activeType='All',isAdmin=false,editingId=null;
 
 // ── INIT ──────────────────────────────────────────────────────────────────
-async function init(){
-  try{const r=await window.storage.get('foodology_resources');resources=r?JSON.parse(r.value):[...DEFAULT];}
+function init(){
+  try{const r=localStorage.getItem('foodology_resources');resources=r?JSON.parse(r):[...DEFAULT];}
   catch(e){resources=[...DEFAULT];}
   renderPills();filter();
   // Load saved API keys into fields
-  try{
-    const yk=await window.storage.get('yt_api_key');
-    const ak=await window.storage.get('anthropic_api_key');
-    if(yk)document.getElementById('ytKeyInput').placeholder='Key saved ✓';
-    if(ak)document.getElementById('anthropicKeyInput').placeholder='Key saved ✓';
-  }catch(e){}
+  const yk=localStorage.getItem('yt_api_key');
+  const ak=localStorage.getItem('anthropic_api_key');
+  if(yk)document.getElementById('ytKeyInput').placeholder='Key saved ✓';
+  if(ak)document.getElementById('anthropicKeyInput').placeholder='Key saved ✓';
 }
 
-async function saveToStorage(){
-  try{await window.storage.set('foodology_resources',JSON.stringify(resources));}catch(e){}
+function saveToStorage(){
+  try{localStorage.setItem('foodology_resources',JSON.stringify(resources));}catch(e){}
 }
 
 // ── ADMIN ─────────────────────────────────────────────────────────────────
@@ -280,18 +278,18 @@ function logoutAdmin(){
 }
 
 // ── SETTINGS ─────────────────────────────────────────────────────────────
-async function openSettings(){document.getElementById('settingsOverlay').classList.add('open');}
+function openSettings(){document.getElementById('settingsOverlay').classList.add('open');}
 function closeSettings(){document.getElementById('settingsOverlay').classList.remove('open');}
-async function saveSettings(){
+function saveSettings(){
   const yk=document.getElementById('ytKeyInput').value.trim();
   const ak=document.getElementById('anthropicKeyInput').value.trim();
-  if(yk){await window.storage.set('yt_api_key',yk);document.getElementById('ytKeyInput').value='';document.getElementById('ytKeyInput').placeholder='Key saved ✓';}
-  if(ak){await window.storage.set('anthropic_api_key',ak);document.getElementById('anthropicKeyInput').value='';document.getElementById('anthropicKeyInput').placeholder='Key saved ✓';}
+  if(yk){localStorage.setItem('yt_api_key',yk);document.getElementById('ytKeyInput').value='';document.getElementById('ytKeyInput').placeholder='Key saved ✓';}
+  if(ak){localStorage.setItem('anthropic_api_key',ak);document.getElementById('anthropicKeyInput').value='';document.getElementById('anthropicKeyInput').placeholder='Key saved ✓';}
   closeSettings();
   alert('Settings saved!');
 }
 
-async function getKey(k){try{const r=await window.storage.get(k);return r?r.value:'';}catch(e){return '';}}
+function getKey(k){try{return localStorage.getItem(k)||'';}catch(e){return '';}}
 
 // ── SCAN FOR NEW CONTENT ──────────────────────────────────────────────────
 async function openScanPanel(){
@@ -299,8 +297,8 @@ async function openScanPanel(){
   panel.classList.add('visible');
   panel.scrollIntoView({behavior:'smooth',block:'start'});
 
-  const anthropicKey=await getKey('anthropic_api_key');
-  const ytKey=await getKey('yt_api_key');
+  const anthropicKey=getKey('anthropic_api_key');
+  const ytKey=getKey('yt_api_key');
 
   if(!anthropicKey && !ytKey){
     document.getElementById('scanResults').innerHTML=`
@@ -441,7 +439,7 @@ function renderScanResults(items,errors){
 
 async function addFromScan(item,btnId){
   resources.unshift({id:'r'+Date.now(),...item});
-  await saveToStorage();
+  saveToStorage();
   filter();
   const btn=document.getElementById(btnId);
   if(btn){btn.textContent='Added ✓';btn.classList.add('added');btn.disabled=true;}
@@ -518,13 +516,13 @@ async function saveResource(){
   }else{
     resources.unshift({id:'r'+Date.now(),title,url,type,summary,tags});
   }
-  await saveToStorage();closeEditModal();filter();
+  saveToStorage();closeEditModal();filter();
 }
 function editResource(id){openModal(id);}
 async function deleteResource(id){
   if(!confirm('Delete this resource?'))return;
   resources=resources.filter(r=>r.id!==id);
-  await saveToStorage();filter();
+  saveToStorage();filter();
 }
 
 // ── EXPORT ────────────────────────────────────────────────────────────────
