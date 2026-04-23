@@ -321,18 +321,21 @@ async function openScanPanel(){
   if(anthropicKey){
     const scanJobs=[
       {label:'Blog Posts',type:'Blog Post',
-       prompt:'Search for blog posts on foodologyfeedingtherapy.com. Use web search with query: site:foodologyfeedingtherapy.com. List every blog post article you find with its title and full URL. Return as JSON array: [{"title":"...","url":"...","type":"Blog Post","summary":"one sentence"}]. Only blog article URLs, not homepage or service pages. Return ONLY the JSON array.'},
+       prompt:'Search: site:foodologyfeedingtherapy.com. Return JSON array of blog articles found: [{"title":"...","url":"...","type":"Blog Post","summary":"..."}]. Blog article URLs only. JSON array only.'},
       {label:'Podcast Episodes',type:'Podcast Episode',
-       prompt:'Search for podcast episodes on foodologyfeeding.mykajabi.com/podcasts. Use web search with query: site:foodologyfeeding.mykajabi.com/podcasts. List every episode you find with title and full URL. Return as JSON array: [{"title":"...","url":"...","type":"Podcast Episode","summary":"one sentence"}]. Return ONLY the JSON array.'},
+       prompt:'Search: site:foodologyfeeding.mykajabi.com/podcasts/how-to-un-picky-your-picky-eater-2/episodes. Return JSON array: [{"title":"...","url":"...","type":"Podcast Episode","summary":"..."}]. JSON array only.'},
     ];
 
-    for(const job of scanJobs){
+    for(let ji=0;ji<scanJobs.length;ji++){
+      const job=scanJobs[ji];
+      // Small delay between scans to avoid rate limits
+      if(ji>0)await new Promise(r=>setTimeout(r,3000));
       try{
         // Turn 1: let Claude search
         const r1=await fetch('https://api.anthropic.com/v1/messages',{
           method:'POST',
           headers:{'Content-Type':'application/json','x-api-key':anthropicKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-          body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,
+          body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,
             tools:[{type:'web_search_20250305',name:'web_search'}],
             messages:[{role:'user',content:job.prompt}]})
         });
@@ -346,7 +349,7 @@ async function openScanPanel(){
         const r2=await fetch('https://api.anthropic.com/v1/messages',{
           method:'POST',
           headers:{'Content-Type':'application/json','x-api-key':anthropicKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-          body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,
+          body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,
             tools:[{type:'web_search_20250305',name:'web_search'}],
             messages:[
               {role:'user',content:job.prompt},
